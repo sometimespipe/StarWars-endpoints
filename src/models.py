@@ -8,11 +8,12 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
+    public_id = db.Column(db.String(120), unique=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False, default=True)
-    age = db.Column(db.String(80), unique=False, nullable=False)
+    is_active = db.Column(db.Boolean(), unique=False, default=True)
+    admin = db.Column(db.Boolean(), default=False)
     favorites = db.relationship('Favorite', backref='User') # One to Many
 
     # __repr__():  tell python how to print the class object in the console
@@ -25,7 +26,7 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email,
-            "age": self.age,
+            "public_id": self.user_id,
             # do not serialize the password, its a security breach
         }
     
